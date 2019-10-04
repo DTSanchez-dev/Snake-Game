@@ -76,19 +76,25 @@ public class GamePanel extends JPanel implements Runnable {
             lastRenderTime=now;
             frameCount++;
 
-            int thisSecond = (int) (lastUpdateTime/1000000000);
-            if(thisSecond>lastSecondTime){
-                if(frameCount!=oldFrameCount){
-                    System.out.println("NEW SECOND "+thisSecond+" "+frameCount);
-                    oldFrameCount=frameCount;
+            int thisSecond = (int) (lastUpdateTime / 1000000000);
+            if (thisSecond > lastSecondTime) {
+                if (frameCount != oldFrameCount) {
+                    System.out.println("NEW SECOND " + thisSecond + " " + frameCount);
+                    oldFrameCount = frameCount;
                 }
-                frameCount=0;
-                lastSecondTime=thisSecond;
+                frameCount = 0;
+                lastSecondTime = thisSecond;
             }
 
-            while (now-lastRenderTime<TTBR&&now-lastUpdateTime<TBU){
+            while (now - lastRenderTime < TTBR && now - lastUpdateTime < TBU) {
                 Thread.yield();
-                // TODO
+
+                try {
+                    Thread.sleep(1);
+                } catch (Exception e) {
+                    System.out.println("ERROR: Yielding thread");
+                }
+                now = System.nanoTime();
             }
         }
     }
